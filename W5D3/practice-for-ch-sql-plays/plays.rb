@@ -12,7 +12,7 @@ class PlayDBConnection < SQLite3::Database
 end
 
 class Play
-  attr_accessor :id, :title, :year, :playwright_id, :find_by_title, :find_by_playwright
+  attr_accessor :id, :title, :year, :playwright_id
 
   def self.all
     data = PlayDBConnection.instance.execute("SELECT * FROM plays")
@@ -26,7 +26,7 @@ class Play
     @playwright_id = options['playwright_id']
   end
 
-  def find_by_title(title)
+  def self.find_by_title(title)
     PlayDBConnection.instance.execute(<<-SQL, title)
       SELECT
         *
@@ -38,7 +38,7 @@ class Play
     SQL
   end
 
-  def find_by_playwright(name)
+  def self.find_by_playwright(name)
     PlayDBConnection.instance.execute(<<-SQL, name)
       SELECT
         *
@@ -78,7 +78,7 @@ end
 
 class Playwright
 
-    attr_accessor :id, :name, :birth_year, :find_by_name
+    attr_accessor :id, :name, :birth_year
 
     def self.all
       data = PlayDBConnection.instance.execute("SELECT * FROM playwrights")
@@ -92,7 +92,7 @@ class Playwright
 
     end
 
-    def find_by_name(name)
+    def self.find_by_name(name)
       PlayDBConnection.instance.execute(<<-SQL, name)
         SELECT
           *
