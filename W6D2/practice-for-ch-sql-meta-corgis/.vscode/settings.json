@@ -1,0 +1,7 @@
+{
+  "rubyLsp.formatter": "rubocop",
+  "solargraph.autoformat": true,
+  "ruby.useLanguageServer": true,
+  "sorbet.enabled": true,
+  "solargraph.useBundler": true
+}
