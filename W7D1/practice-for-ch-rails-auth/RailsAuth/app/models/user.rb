@@ -1,53 +1,42 @@
 class User < ApplicationRecord
   has_secure_password
   validates :username, presence: true, uniqueness: true
-  validates :password_digest, presence: {message: "Password can't be blank"}, allow_nil: true
-  validates :session_token, presence: true, uniqueness: { message: "Session token must be unique" }
+  validates :password_digest, presence: { message: "Password can't be blank" }, allow_nil: true
+  validates :session_token, presence: true, uniqueness: { message: 'Session token must be unique' }
   after_initialize :ensure_session_token
   attr_reader :password
 
-
-
-  def reset_session_token!
-    self.session_token = SecureRandom::urlsafe_base64
-    self.save!
-    return self.session_token
-  end
-
-
-  def self.generate_session_token
-    SecureRandom::urlsafe_base64(16)
-  end
-
-  def generate_unique_session_token
-    self.session_token = User.generate_session_token
-    while User.find_by(session_token: self.session_token)
-      self.session_token = User.generate_session_token
-    end
-    self.session_token
+  def self.generate_unique_session_token
+    token = SecureRandom.urlsafe_base64
+    token = SecureRandom.urlsafe_base64 while User.exists?(session_token: token)
+    token
   end
 
   def password=(password)
-    @password = password
     self.password_digest = BCrypt::Password.create(password)
+    @password = password
   end
 
-    def is_password?(password)
-      BCrypt::Password.new(self.password_digest).is_password?(password)
-    end
+  def password?(password)
+    BCrypt::Password.new(password_digest).is_password?(password)
+  end
 
-    def self.find_by_credentials(username, password)
-      user = User.find_by(username: username)
-      return nil unless user
-      user.is_password?(password) ? user : nil
-    end
+  def self.find_by_credentials(username, password)
+    user = User.find_by(username: username)
+    return nil unless user
 
+    user.password?(password) ? user : nil
+  end
 
+  def reset_session_token!
+    self.session_token = User.generate_unique_session_token
+    save!
+    session_token
+  end
 
+  private
 
-    private
-
-    def ensure_session_token
-      self.session_token ||= User.generate_session_token
-    end
+  def ensure_session_token
+    self.session_token ||= User.generate_unique_session_token
+  end
 end

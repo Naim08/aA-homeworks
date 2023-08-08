@@ -1,0 +1,9 @@
+{
+  "ruby.format": "rubocop",
+  "rubyLsp.formatter": "auto",
+  "ruby.codeCompletion": "rcodetools",
+  "ruby.intellisense": "rubyLocate",
+  "ruby.useLanguageServer": false,
+  "solargraph.autoformat": false,
+  "solargraph.formatting": true
+}
