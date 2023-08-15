@@ -1,7 +1,6 @@
 "use strict";
 function mysteryScoping1() {
   var x = "out of block";
-  // eslint-disable-next-line no-constant-condition
   if (true) {
     var x = "in block";
     console.log(x);
@@ -94,3 +93,71 @@ const sumOfNPrimes = (n) => {
 };
 
 console.log(sumOfNPrimes(4));
+
+const titleize = (names) => {
+  const naim = "naim";
+  return () => {
+    console.log(naim);
+    let titleized = names.map(
+      (name) => `Mx. ${name} ${naim} Jingleheimer Schmidt`
+    );
+    console.log(titleized);
+  };
+};
+let title = titleize(["Mary", "Brian", "Leo"]);
+title();
+const naim = "naim2";
+title();
+
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  sayHello() {
+    console.log(`Hello, my name is ${this.name}`);
+  }
+  visit(person) {
+    console.log(`Hello ${person.name}, my name is ${this.name}`);
+  }
+}
+
+class Naim extends Person {
+  #age;
+  constructor(name, age, favColor) {
+    super(name, age);
+    this.favColor = favColor;
+    this.#age = age;
+  }
+  sayHello() {
+    console.log(
+      `Hello, my name is ${this.name} and my fav color is ${this.favColor}`
+    );
+  }
+  #privateMethod() {
+    console.log("hi, I am private");
+  }
+}
+
+const hi = function () {
+  console.log("hi");
+};
+const hi2 = () => {
+  console.log("hi");
+};
+// arr.forEach((el, i) => {
+//   console.log(el);
+// });
+
+// Global context
+
+// const myFunc = function (num, callback) {
+//   console.log("myFunc");
+//   // this.name = "naim2";
+//   callback.bind(this)(num);
+// };
+
+// myFunc(5, function (num) {
+//   console.log(this.name);
+//   console.log(num);
+// });
