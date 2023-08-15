@@ -1,5 +1,7 @@
+"use strict";
 function mysteryScoping1() {
   var x = "out of block";
+  // eslint-disable-next-line no-constant-condition
   if (true) {
     var x = "in block";
     console.log(x);
